@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta name="generator" content="Hexo 6.0.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>AWS 课堂笔记 Part1 - Athos World</title>
+
+  
+  <meta name="description" content="Cloud Computing
+什么是云计算Cloud Computing？
+ABStruction Layer -&gt; 24小时提供安全可访问的服务
+
+云计算与传统模式相比的优势：
+LowCost    省钱
+Elastic        弹性
+Flexible    灵活（可以容易的对...">
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="title" href="/"><div class="main">Athos World</div><div class="sub cap">一直在路上</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/about/">About</a><a class="nav-item" href="/more/">More</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Cloud-Computing"><span class="toc-text">Cloud Computing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AWS"><span class="toc-text">AWS</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2019-04-23T00:00:00.000Z">2019-04-23</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>AWS 课堂笔记 Part1</span></h1>
+<h3 id="Cloud-Computing"><a href="#Cloud-Computing" class="headerlink" title="Cloud Computing"></a>Cloud Computing</h3><ul>
+<li><p><strong>什么是云计算Cloud Computing？</strong></p>
+<p>ABStruction Layer -&gt; 24小时提供安全可访问的服务</p>
+</li>
+<li><p><strong>云计算与传统模式相比的优势：</strong></p>
+<p>LowCost    省钱</p>
+<p>Elastic        弹性</p>
+<p>Flexible    灵活（可以容易的对资源进行增删改）（全球区域）</p>
+<p>Secure        安全</p>
+</li>
+<li><p><strong>云计算的三种模式</strong></p>
+<p>SaaS、PaaS、IaaS</p>
+</li>
+<li><p><strong>Cloud vs. On-Premises</strong></p>
+<p>On-Premises/Cloud 的选择是根据<strong>用户需求和用户情况</strong>决定的,不能说哪一个更好.</p>
+<p>Cloud 没有预付的投资 / On-Premises需要考虑硬件、人力、安装配置等成本</p>
+<p>Cloud 有更低的运行中的花费 / On-Premises 需要进行资源升级，人力管理、维护</p>
+<p>Cloud 可以根据不同时间的资源需求自动调节资源,比如双十一.</p>
+<p>传统架构的每一部分在AWS中都有对应</p>
+<hr>
+</li>
+</ul>
+<h3 id="AWS"><a href="#AWS" class="headerlink" title="AWS"></a>AWS</h3><ul>
+<li><p><strong>什么是AWS</strong></p>
+<p>允许企业和开发者用 web服务部署可拓展的，复杂的的程序。</p>
+<p>AWS是 Web服务（远程计算服务）的集合，这些Web服务通过互联网组成了一个云计算平台。AWS拥有可连接互联网的硬件资源，提供用户所需要的服务。</p>
+</li>
+<li><p><strong>AWS客户：</strong>企业、公共部门、创业公司</p>
+</li>
+<li><p><strong>AWS平台可进行的操作</strong></p>
+<p>Application Hosting         应用托管</p>
+<p>Backup and Storage         备份和存储</p>
+<p>Content Delivery             内容交付 ，在全球发行内容，有高传输速度</p>
+<p>Enterprise IT                     部署企业内部或者外部的应用</p>
+<p>Databases                        数据库</p>
+<p>Website                            网站</p>
+</li>
+<li><p><strong>Regions（区域）（地理地区） &amp; Availability Zone（可用区）&amp; Edge Location</strong></p>
+<p>比如 us-east-1 美国东部弗吉尼亚北部 -区域</p>
+<p>如果 use1-az1 是👆区域的 AZ ID，那么只要都有这个use1-az1，就说明在一个子网</p>
+<p>区域一样不一定在一个地方，可用区一样一定在一个地方</p>
+<p>一个Region至少有两个AZ，区域和可用区都是独立的</p>
+<p>Edge主要提供 Amazon CloudFront 和 Amazon Route53 的服务使用，和其他AWS服务没有关系</p>
+<p>区域的选择与运营成本有直接关系</p>
+</li>
+<li><p><strong>AWS 架构</strong></p>
+<ul>
+<li>AWS 基础服务<ul>
+<li>Compute</li>
+<li>Network</li>
+<li>Storage</li>
+<li>Security &amp; Identity</li>
+<li>Applications</li>
+</ul>
+</li>
+<li>AWS 平台服务<ul>
+<li>Database</li>
+<li>Analysis</li>
+<li>App Service</li>
+<li>Management Tools</li>
+<li>Mobile Services</li>
+<li>Internet of Things</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Amazon Elastic Compute Cloud （EC2）</strong></p>
+<p>​    虚拟服务器、通过AWS console运行管理、WIN / Linux 、Full administrative control</p>
+<p><strong>Amazon Machine Image （AMI）</strong></p>
+<p>​    运行EC2的模板、可以自定义、可以用同一个AMI运行多个不同类型实例</p>
+<p><strong>Amazon Route 53</strong></p>
+<p>​    DNS解析、用户通过 Route 53 连接到自己的 AWS 的基础设施</p>
+<p><strong>Database Options</strong></p>
+<p>建立数据库与EC2分离，防止在EC2发生故障之后丢失数据。</p>
+<ul>
+<li>Self-managed：EC2里的 Database </li>
+<li>Fully managed：<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/Introduction.html">AWS DynamoDB</a> （NoSQL）: <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html">核心组件</a></li>
+<li>RDS（关系数据库）： MySQL 、Oracle、Amazon Aurora （MySQL兼容关系数据库）</li>
+<li>Amazon Redshift （多PB级数据仓库服务）（ANSI SQL）（从小规模开始部署，<em><strong>pay as you go</strong></em>，便宜）</li>
+</ul>
+</li>
+</ul>
+<p><strong>Elastic Load Balancing</strong></p>
+<ul>
+<li>Classic Load Balancer：网络层</li>
+<li>Application Load Balancer：应用层</li>
+</ul>
+<p><strong>Amazon Storage Services（S3）&amp;  CloudFront &amp; ElasticCache</strong></p>
+<p>​    什么是 <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/AmazonCloudFront/latest/DeveloperGuide/Introduction.html">CloudFront </a>?    <a target="_blank" rel="noopener" href="https://www.amazonaws.cn/elasticache/?nc1=h_ls">ElasticCache</a>?</p>
+<p>​    User -&gt; Route 53 -&gt; CloudFront (在此查找有没有用户需要的数据，有直接提供给用户) </p>
+<p>​        1. -&gt; ELB -&gt; EC2 -&gt; DBs</p>
+<p>​        2. -&gt;Amazon S3</p>
+<p><strong>Auto Scaling 自动缩放</strong></p>
+<p>​    根据需要，自动调节网络层和应用层</p>
+<p>​    <a href="https://pcathos.github.io/2019/aws-lab-elb.html">AWS Lab ELB |弹性负载均衡</a>    </p>
+<hr>
+<p><strong>定价模型</strong></p>
+<ul>
+<li>On-Demand 按需 （小时）</li>
+<li>Reserved  预留（会有折扣） —— A cost-effective purchase type for predictable workload</li>
+<li>Spot 可用来优化成本，价格根据供需关系决定，用户设置最高价，当EC2需要更多容量/超过最高价时会提前通知然后中断Spot实例（相当于低价购买AWS中可用空闲计算容量）（适用于测试和开发环境、无状态web服务、图像渲染和视频转码、科学研究和大数据分析、机器学习、高性能计算HPC、财务分析和测试）</li>
+<li>Scheduled Instance 在一年的时间内,周期性的运行.如果不需要连续运行,可以选择这个方案.</li>
+<li>Dedicated 专用 —— Run compute instance on isolated hardware</li>
+</ul>
+<p><strong>Cost Optimization 成本优化</strong></p>
+<ul>
+<li>Right-sizing 合适的实例类型；查看CPU、RAM、存储以及网络利用率来确定实例可以被精简到什么程度</li>
+<li>Reserved Instances([PU][AU][NU]RI) 部分预付、全部预付、无预付（预留实例）</li>
+<li>Increase Elasticity （Auto Scaling）（关闭非生产的实例）</li>
+<li>Monitor &amp; Improve 配置工具-&gt;找出可以快速监控并操作资源的工具-&gt;设置自动报告-&gt;选择RI-&gt;成本优化报告</li>
+</ul>
+<p><strong>Total Cost of Ownership-TCO</strong></p>
+<p>​    比较运行的基础设施环境，本地部署（采购<strong>CAPEX</strong>和运营成本<strong>OPEX</strong>）和云部署总成本。</p>
+<p>中文<em>里,你可以考虑将</em><strong>pay as you go</strong>*翻译为：按用付费或按量付费.</p>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2019-04-23-professional-words-p1/">专业词汇 (AWS)<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2019-04-24-aws-lab-rds/">AWS Lab RDS |关系数据库服务<span class="note">Newer</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</p>
+<p>This site was deployed by <a href="https://pcathos.github.io/">@Athos SUN</a> using <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.6.1" title="v1.6.1">Stellar</a>.</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.6.1';
+  stellar.config = {
+    date_suffix: {
+      just: 'Just',
+      min: 'minutes ago',
+      hour: 'hours ago',
+      day: 'days ago',
+      month: 'months ago',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

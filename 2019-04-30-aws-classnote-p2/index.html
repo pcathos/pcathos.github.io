@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta name="generator" content="Hexo 6.0.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>AWS 课堂笔记 Part2 - Athos World</title>
+
+  
+  <meta name="description" content="AMIInstance Lifecycle 
+
+Pending 挂起，准备进入running状态
+Running 运行
+Rebooting 重新启动,建议从控制台重启
+Shutting Down 关闭 当不再需要一个实例的时候，关机终止。
+Terminated 终止 被销毁前可以保持在控制台一...">
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="title" href="/"><div class="main">Athos World</div><div class="sub cap">一直在路上</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/about/">About</a><a class="nav-item" href="/more/">More</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#AMI"><span class="toc-text">AMI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Amazon-Virtual-Private-Cloud-%EF%BC%88VPC%EF%BC%89"><span class="toc-text">Amazon Virtual Private Cloud （VPC）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AWS-Security"><span class="toc-text">AWS Security</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2019-04-30T00:00:00.000Z">2019-04-30</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>AWS 课堂笔记 Part2</span></h1>
+<h3 id="AMI"><a href="#AMI" class="headerlink" title="AMI"></a>AMI</h3><p><strong>Instance Lifecycle</strong> </p>
+<ul>
+<li>Pending 挂起，准备进入running状态</li>
+<li>Running 运行</li>
+<li>Rebooting 重新启动,建议从控制台重启</li>
+<li>Shutting Down 关闭 当不再需要一个实例的时候，关机终止。</li>
+<li>Terminated 终止 被销毁前可以保持在控制台一段时间可见，终止无法被恢复。</li>
+<li>Stopping 停止ing</li>
+<li>Stopped 停止，EBS支持的情况下可以停止，可以修改实例属性，<a href="https://pcathos.github.io/2019/aws-lab-ebs-iam.html">AWS EBS Lab </a> </li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">graph LR;</span><br><span class="line">	AMI--Launch--&gt;Pending	</span><br><span class="line">	Pending--&gt;Running</span><br><span class="line">	Running--stop--&gt;Stopping</span><br><span class="line">	</span><br><span class="line">	subgraph EBS-backed instances only</span><br><span class="line">		Stopping--&gt;Stopped</span><br><span class="line">	end</span><br><span class="line">	</span><br><span class="line">	Stopped--Start--&gt;Pending</span><br><span class="line">	Stopped--Terminated--&gt;Terminated</span><br><span class="line">	Running--Reboot--&gt;Rebooting</span><br><span class="line">	Rebooting--&gt;Running</span><br><span class="line">	Running--Terminate--&gt;Shutting-Down</span><br><span class="line">	Shutting-Down--&gt;Terminated</span><br></pre></td></tr></table></figure>
+
+<p><strong>Instance Metadata &amp; User Data 元数据 &amp; 用户数据</strong></p>
+<p>​    可以在实例被运行的时候从内部访问，没有被加密</p>
+<p>​    元数据：实例的metadata的种类的数据，可用来配置、管理正在运行的实例</p>
+<p>​    用户数据：实例启动时执行的一些脚本，实例启动（launch）时自动执行脚本，被暂停修改后start不能运行。</p>
+<p>​    linux #!bin/sh </p>
+<p>​    windows &lt;powershell&gt;</p>
+<hr>
+<h3 id="Amazon-Virtual-Private-Cloud-（VPC）"><a href="#Amazon-Virtual-Private-Cloud-（VPC）" class="headerlink" title="Amazon Virtual Private Cloud （VPC）"></a>Amazon Virtual Private Cloud （VPC）</h3><p>​    在AWS中提供一个私有的隔离的虚拟网络，对虚拟网络环境有完全控制权。如ip地址范围、子网创建、路由表配置、网关选择</p>
+<p><strong>Subnets 子网</strong></p>
+<p>​    每一个subnet 有唯一ID，有私有ip地址范围，可把AWS资源划分到子网中</p>
+<p>​    Public subnet：有一个指向网关的路由（web server在网络中被访问）</p>
+<p>​    Private subnet：没有网关的路由，只有VPC内部的数据库访问（VPC NAT Gateway）</p>
+<p>​    VPN only subnet：通过Virtual private Gateway连接 Customer Network，企业数据中心</p>
+<p><strong>Security in VPC</strong></p>
+<ul>
+<li>Security Group ：EC2实例的防火墙，在实例级别控制入站出站流量。</li>
+<li>ACLs：子网防火墙，在子网级别控制入站出站流量。</li>
+<li>Key Pairs：EC2使用 <em>密钥对</em>  来加解密登录，例如：Linux实例没有密码，用密钥对+ssh。windows实例用密钥对获取管理员密码，然后RDP（Remote Desktop Protocol）登录</li>
+</ul>
+<p><strong>Amazon Simple Storage Service（S3)</strong></p>
+<p>​    允许在网络上存储，可扩展，安全可靠、快速、廉价（…）、Http或者Https访问、以 <em>Bucket</em> 桶为单位（最多100 Bucket），对象最大5TB、没有数量限制</p>
+<p>​    Bucket + key + version</p>
+<p>​    http://<strong>doc(Bucket)</strong>.s3.amazonaws.com/<strong>2006-03-01/AmazonS3.html (key)</strong></p>
+<p>​    数据访问：IAM、ACLs、Bucket Policies</p>
+<p>​    数据传输：SSL加密端点（因特网和EC2内部）</p>
+<p>​    数据存储：Amazon Server Side Encryption （SSE）、用户自己使用Amazon S3 Encryption Client加密并上传</p>
+<p>​    版本控制：版本可以用来：控制、检索、恢复（意外操作和故障）每个对象的每个版本。同一个桶中两个对象，密钥可以相同，版本id必须不同。开启了版本功能就不能返回到没有版本的状态。</p>
+<p>​    生命周期（对象）：某些对象会有明确的生命周期。某些档案和记录可能会永久存档（不经常访问的可以归档到👇Glacier 或者👇S3 Infrequent Access）。</p>
+<p>​    定价：用多少付多少，没有最低消费、基于bucket的位置、（按月计算 AWS Simple Monthly Calculator）消费类型分为：存储消费，请求消费，数据传输消费（S3外）</p>
+<p><strong>Amazon Glacier</strong></p>
+<p>​    <strong>便宜，访问延迟高</strong>，成本低、适用超大文件（TB、PB），使用访问频率极低文件、可靠性高异地备份。（公司历史数据、出版物制作过程的素材和中间产物，科研过程中原始数据的保存</p>
+<p><strong>存储比较</strong></p>
+<p>​    <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20456570">知乎-亚马逊云计算平台AWS的Glacier和S3有什么区别?</a></p>
+<p>​    S3标准存储、S3 IA （长时间保存和不常访问但仍需要高性能）、Glacier（与👈类似但没有高性能不能实时存取，成本更低）、S3 Reduced Redundancy Storage（相比S3和S3IA，减少冗余，降低成本）</p>
+<p><strong>Amazon EBS 和 Amazon S3 比较</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Amazon EBS</th>
+<th>Amazon S3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Paradigm</td>
+<td>Block storage with file system</td>
+<td>Object store <strong>对象级操作更复杂耗时</strong></td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>very fast</td>
+<td>fast</td>
+</tr>
+<tr>
+<td>Redundancy</td>
+<td>Across multiple servers in an Availability Zone</td>
+<td>Across multiple facilities in a Region</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>EBS Encryption- Data volumes and Snapshots</td>
+<td>Encryption</td>
+</tr>
+<tr>
+<td>Access IntNet</td>
+<td>No ，if mounted as FTP server then YES</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Typical use</td>
+<td>Disk drive</td>
+<td>Online storage</td>
+</tr>
+</tbody></table>
+<p><strong>Amazon EC2 Instance Storage 实例存储</strong>：临时块存储</p>
+<hr>
+<h3 id="AWS-Security"><a href="#AWS-Security" class="headerlink" title="AWS Security"></a>AWS Security</h3><p><strong>SSL Endpoints</strong>: HTTPS 加密连接 WebService</p>
+<p><strong>AWS Multi-Tier Security Groups</strong></p>
+<p>Internet—&gt;Web Tier（可设置开放端口） —&gt;Application Tier—&gt;Database Tier</p>
+<p>每一层安全组只接受前一层的流量，或者来自Admin Network 的ssh/rdp.</p>
+<p><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles.html"><strong>IAM Roles</strong></a></p>
+<p><strong>Temporary Security Credentials （AWS STS Security Token Service）</strong></p>
+<p>Access Key ID、Secret Access Key、Session Token</p>
+<p>Expiration （期满时间，可以15-36小时之间，并且可以作为附加参数传递用来验证临时访问是否有效）</p>
+<p><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/best-practices.html"><strong>AWS IAM Best Practices</strong></a></p>
+<p><strong>AWS CloudTrail</strong></p>
+<p>是一个web service，记录账户的API调用、提交日志文件到S3 bucket</p>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2019-04-24-aws-lab-ebs-iam/">AWS Lab EBS & IAM|弹性块存储&身份和访问管理<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2019-05-03-aws-classnote-p3/">AWS 课堂笔记 Part3<span class="note">Newer</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</p>
+<p>This site was deployed by <a href="https://pcathos.github.io/">@Athos SUN</a> using <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.6.1" title="v1.6.1">Stellar</a>.</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.6.1';
+  stellar.config = {
+    date_suffix: {
+      just: 'Just',
+      min: 'minutes ago',
+      hour: 'hours ago',
+      day: 'days ago',
+      month: 'months ago',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
